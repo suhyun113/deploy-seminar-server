@@ -12,6 +12,9 @@ const MAX_NAME = 20;
 const MAX_MESSAGE = 50;
 const POST_COOLDOWN_MS = 3000;
 
+const nowKST = () =>
+  new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().replace("Z", "+09:00");
+
 let posts = [
   {
     id: 1,
@@ -19,7 +22,7 @@ let posts = [
     name: "김수현",
     message: "배포 세미나 방명록이 열렸어요!",
     commit: null,
-    createdAt: new Date().toISOString(),
+    createdAt: nowKST(),
   },
 ];
 let nextId = 2;
@@ -59,7 +62,7 @@ app.post("/api/posts", (req, res) => {
   }
   lastPostAt.set(req.ip, now);
 
-  const post = { id: nextId++, type, name, message, commit, createdAt: new Date().toISOString() };
+  const post = { id: nextId++, type, name, message, commit, createdAt: nowKST() };
   posts.push(post);
   res.status(201).json(post);
 });
